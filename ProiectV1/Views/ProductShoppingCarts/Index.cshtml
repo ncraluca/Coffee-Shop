@@ -1,0 +1,118 @@
+﻿@model ProiectV1.Models.ProductShoppingCart
+
+<h2>Cosul Meu de Cumparaturi</h2>
+@{
+    int? total = 0;
+}
+
+
+@foreach (ProiectV1.Models.ProductShoppingCart productcart in ViewBag.ProductShoppingCarts)
+{
+<div class="card">
+    <div class="card-body">
+
+
+        <h3 class="card-title alert-success py-3 px-3 rounded-2">@productcart.Product.Title</h3>
+
+        <div class="d-flex justify-content-between flex-row mt-5">
+
+            <div><i class="bi bi-globe"></i>Cantitate: @productcart.Quantity</div>
+            <span class="alert-success">
+                <div><i class="bi bi-person"></i>Pret: @productcart.Price $ </div>
+            </span>
+
+        </div>
+
+
+    </div>
+    <form method="post" action="/ProductShoppingCarts/Delete/@productcart.Id">
+
+            <button class="btn btn-danger" type="submit">Sterge din cos</button>
+
+    </form>
+        @{
+            total += productcart.Price * productcart.Quantity;
+        }
+
+</div>
+<br />
+
+}
+<h3>Total: @total lei</h3>
+<style>
+    :root {
+        primary-color: #ff704d;
+        secondary-color: #ffccb3;
+        background-color: #fffaf5;
+        text-color: #5a5a5a;
+        link-color: #ff704d;
+        link-hover-color: #d9534f;
+        border-color: #ffccb3;
+        btn-primary-bg: #ff704d;
+        btn-primary-text: #ffffff;
+        btn-secondary-bg: #d9534f;
+        btn-secondary-text: #ffffff;
+    }
+
+    body {
+        background-color: #fffaf5;
+        color: #5a5a5a;
+        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    }
+    h2 {
+text-align: center;
+        color: #a6743f;
+}
+
+.card {
+        background-color: #fffaf5;
+border: none;
+border-radius: 10px;
+box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+margin-bottom: 20px;
+}
+
+.card-body {
+padding: 20px;
+}
+
+.card-title {
+        color: #ff704d;
+}
+
+.btn-danger {
+        background-color: #d9534f;
+        color: #ffffff;
+border: none;
+margin-top: 10px;
+}
+
+.btn-danger:hover {
+            background-color:#d9534f;
+}
+
+
+h3 {
+text-align: center;
+        color: #a6743f;
+}
+
+
+.bi-globe, .bi-person {
+        color: #ffccb3;
+margin-right: 0.5rem;
+}
+
+.alert-success {
+        background-color: #fffaf5;
+        border-color: #ffccb3;
+        color: #5a5a5a;
+}
+
+
+.media (max-width: 768px) {
+.btn {
+width: 100%;
+}
+}
+</style>

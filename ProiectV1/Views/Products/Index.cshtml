@@ -1,0 +1,198 @@
+﻿@*Pagina pe care o vede userul cand vrea sa vizualizeze toate produsele*@
+
+@{
+    ViewBag.Title = "Index";
+}
+
+
+
+<link href="/css/indexproduct.css" rel="stylesheet" type="text/css" />
+<br />
+
+<h2 class="text-center">Produsele noastre</h2>
+
+<br />
+
+@if (ViewBag.Message != null)
+{
+    <div class="@ViewBag.Alert p-3 rounded-3 text-center mb-5">@ViewBag.Message</div>
+}
+<br />
+
+
+@*motor de cautare*@
+<form method="GET">
+    <div class="input-group mb-3">
+        <input type="text" class="form-control"
+               placeholder="Search topics or keywords" name="search"
+               value="@ViewBag.SearchString">
+        <button class="btn btn-outline-success"
+                type="submit">
+            Search
+        </button>
+    </div>
+</form>
+
+
+
+
+@* Butoane de sortare *@
+<div class="btn-group mb-3">
+    <a class="btn btn-outline-secondary @((ViewBag.CurrentSort == "priceAsc") ? "active" : "")"
+       href="@ViewBag.PaginationBaseUrl=1&sortOrder=priceAsc">Pret crescator</a>
+    <a class="btn btn-outline-secondary @((ViewBag.CurrentSort == "priceDesc") ? "active" : "")"
+       href="@ViewBag.PaginationBaseUrl=1&sortOrder=priceDesc">Pret descrescator</a>
+    <a class="btn btn-outline-secondary @((ViewBag.CurrentSort == "starsAsc") ? "active" : "")"
+       href="@ViewBag.PaginationBaseUrl=1&sortOrder=starsAsc">Rating crescator</a>
+    <a class="btn btn-outline-secondary @((ViewBag.CurrentSort == "starsDesc") ? "active" : "")"
+       href="@ViewBag.PaginationBaseUrl=1&sortOrder=starsDesc">Rating descrescator</a>
+</div>
+
+
+@*
+@foreach (ProiectV1.Models.Product product in ViewBag.Products)
+{
+        <div class="card">
+            <div class="card-body">
+
+
+                <h3 class="card-title alert-success py-3 px-3 rounded-2">@product.Title</h3>
+
+                @*<div class="card-text">@product.Description</div>*@ @*
+                <div class="card-text">@Html.Raw(product.Description)</div>
+
+                <div class="d-flex justify-content-between flex-row mt-5">
+                <div><i class="bi bi-globe"></i>Pret: @product.Price</div>
+                <div><i class="bi bi-globe"></i>Rating: @product.Rating</div>
+                </div>
+                <div class="d-flex justify-content-between flex-row mt-5">
+
+                    <div><i class="bi bi-globe"></i> @product.Category.CategoryName</div>
+
+                <div class="d-flex justify-content-between flex-row mt-5">
+                    <a class="btn btn-success " href="/Products/Show/@product.Id">Afisare produs</a>
+                    @if (ViewBag.EsteUser == true)
+                    {
+                        <div>
+                            <form asp-action="CreateProd" method="post">
+                                <input type="hidden" name="id" value="@product.Id" />
+                                <button type="submit" class="btn btn-success">Adauga in cos</button>
+                            </form>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="d-flex flex-row justify-content-between p-3 border-1 border-top">
+
+
+                            <a class="btn btn-success" href="/Identity/Account/Register">Adauga in cos</a> @*redirect catre register*@ @*
+
+                        </div>
+                    }
+                 </div>
+
+
+                    <span class="alert-success">
+                        <div><i class="bi bi-person"></i> @product.User.UserName </div>
+                    </span>
+
+                </div>
+
+
+            </div>
+
+            
+        </div>
+        <br />
+    
+}
+
+<br />
+<br />
+*@
+
+<div class="row product-list">
+    @foreach (ProiectV1.Models.Product product in ViewBag.Products)
+    {
+        <div class="col-md-4">
+            <section class="panel">
+                <a href="@Url.Action("Show", "Products", new {id = product.Id})">
+                <div class="pro-img-box">
+
+                    <img src="@product.PictureUrl" alt="Imagine Produs"/>
+                </div>
+                </a>
+
+                <div class="panel-body text-center">
+                    <br />
+                    @if (ViewBag.EsteUser == true)
+                    {
+                        <div>
+                            <form asp-action="CreateProd" method="post">
+                                <input type="hidden" name="id" value="@product.Id" />
+                                <button type="submit" class="btn">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
+                                        <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l1.313 7h8.17l1.313-7zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
+                                    </svg> Adauga in cos
+                                </button>
+                            </form>
+                        </div>
+                    }
+                    else
+                    {
+                        <div>
+
+
+                            <a class="btn" href="/Identity/Account/Register">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
+                                    <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l1.313 7h8.17l1.313-7zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
+                                </svg> Adauga in cos
+                            </a> @*redirect catre register*@
+
+                        </div>
+                    }
+                    <h4>
+                        @product.Title
+                    </h4>
+                    <p class="price">@product.Price $</p>
+                    <p class="price">@product.Rating stars</p>
+                </div>
+            </section>
+        </div>
+     }
+</div>
+    
+    
+    
+
+@* Afisarea paginata a produselor *@
+<div>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <li class="page-item">
+                <a class="page-link"
+                   href="@ViewBag.PaginationBaseUrl=1" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            @for (int i = 1; i <= ViewBag.lastPage; i++)
+            {
+                <li class="page-item">
+                    <a class="page-link"
+                       href="@ViewBag.PaginationBaseUrl=@i">@(i)</a>
+                </li>
+            }
+            <li class="page-item">
+                <a class="page-link"
+                   href="@ViewBag.PaginationBaseUrl=@(ViewBag.lastPage)" aria-
+                   label="Next">
+
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>
+<br />
+<br />
+

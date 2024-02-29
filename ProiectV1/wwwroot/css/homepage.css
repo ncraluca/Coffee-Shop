@@ -1,0 +1,26 @@
+﻿body {
+    
+}
+.parallax {
+    background-image: url("../images/home2.jpeg");
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100vh;
+    width: 100%;
+    position: relative;
+}
+
+
+.container-fluid{
+    border:0;
+    margin:0;
+    padding:0;
+}
+
+.continut {
+    text-align: center;
+    font-size: 30px;
+    color: #372715;
+}

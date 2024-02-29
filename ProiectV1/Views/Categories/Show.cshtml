@@ -1,0 +1,27 @@
+﻿model ProiectV1.Models.Category
+
+@*Pagina pe care o vede administratorul cand vrea sa vizualizeze o categorie specifica (nu lista cu toate))*@
+@{
+    ViewBag.Title = "Afisare categorie";
+}
+
+
+<h2>@ViewBag.Title</h2>
+
+<br />
+
+<p>@Model.CategoryName</p>
+
+
+<form method="post" action="/Categories/Delete/@Model.Id">
+
+    <button class="btn btn-danger" type="submit">Sterge categoria</button>
+
+</form>
+<br />
+<a class="btn alert-success" href="/Categories/Index/">Afisare lista categorii</a>
+
+<br />
+<hr />
+<br />
+

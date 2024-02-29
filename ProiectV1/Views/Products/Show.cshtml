@@ -1,0 +1,217 @@
+﻿@model ProiectV1.Models.Product
+
+@*Pagina pe care o vede userul cand vrea sa vizualizeze un produs specific (nu lista cu toate))*@
+<link href="/css/showproduct.css" rel="stylesheet" type="text/css" />
+<br />
+
+<div class="card">
+
+    <div class="card-body">
+
+        <h3 class="card-title py-3 px-3 rounded-2 text-center">@Model.Title</h3>
+
+        @*<div class="card-text">@Model.Description</div>*@
+        <br/>
+        <br />
+        <div class="card-text">@Html.Raw(Model.Description)</div>
+
+        <br />
+        <br />
+        <div>
+        <img src="@Model.PictureUrl" alt="Imagine Produs" class="img-fluid" width="300" height="200">
+        </div>
+        <br />
+        <br />
+
+        <div class="d-flex justify-content-between flex-row mt-3">
+            <div><strong>Pret:</strong> @Model.Price $</div>
+        </div>
+        <div class="d-flex justify-content-between flex-row mt-3">
+            <div><strong>Rating:</strong> @Model.Rating stars</div>
+        </div>
+        
+        <div class="d-flex justify-content-between flex-row mt-5">
+
+            <div class="continut"><i class="bi bi-globe"></i> @Model.Category.CategoryName</div>
+
+            <div class="continut"><i class="bi bi-person"></i> @Model.User.UserName </div>
+
+
+        </div>
+
+    </div>
+
+
+</div>
+@if (ViewBag.AfisareButoane == true && Model.UserId == ViewBag.UserCurent || ViewBag.EsteAdmin)
+{
+    <div class="d-flex flex-row justify-content-between p-3 border-1 border-top">
+
+
+        <form method="post" action="/Products/Delete/@Model.Id">
+
+            <button class="btn btn-danger" type="submit">Sterge produs</button>
+
+        </form>
+
+    </div>
+}
+@if (ViewBag.AfisareButoane == true && Model.UserId == ViewBag.UserCurent || ViewBag.EsteAdmin)
+{
+    <div class="d-flex flex-row justify-content-between p-3 border-1 border-top">
+
+
+        <form method="post" action="/Products/Edit/@Model.Id">
+
+            <button class="btn btn-success" type="submit">Editeaza produs</button>
+
+        </form>
+
+    </div>
+}
+
+@if (ViewBag.EsteUser == true)
+{
+    <div class="text-center">
+
+         <form asp-action="CreateProd" method="post">
+                    <input type="hidden" name="id" value="@Model.Id" />
+            <button type="submit" class="btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
+                    <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l1.313 7h8.17l1.313-7zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
+                </svg> Adauga in cos
+            </button>
+        </form>
+
+    </div>
+}
+else
+{
+    <div class="text-center">
+
+
+        <a class="btn" href="/Identity/Account/Register">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
+                <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l1.313 7h8.17l1.313-7zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
+            </svg> Adauga in cos
+        </a> @*redirect catre register*@
+
+    </div>
+}
+
+<br />
+<br />
+
+@* Afisare comentarii impreuna cu butoanele de editare si stergere *@
+
+@foreach (var comm in Model.Comments)
+{
+    <div class="container">
+        <div class="row">
+            <div class="col-md-2"></div>
+
+            <div class="col-md-8">
+
+                <div>
+
+                    <p>@comm.Text</p>
+                    <small>@comm.Date</small>
+                    <h4>Rating:@comm.Stars</h4>
+                    <strong><i class="bi bi-person"></i>@comm.User.UserName</strong>
+
+                </div>
+                <br>
+
+
+                @if (comm.UserId == ViewBag.UserCurent || ViewBag.EsteAdmin)
+                {
+
+                    <div class="d-flex">
+
+                        <div>
+
+                            <a class="btn btn-outline-primary" href="/Comments/Edit/@comm.Id"><i class="bi bi-pencil-square"></i>Editeaza</a>
+
+                        </div>
+
+                        <div>
+
+                            <form method="post" action="/Comments/Delete/@comm.Id">
+
+                                <button class="btn btn-outline-danger" type="submit"><i class="bi bi-trash"></i>Sterge</button>
+
+                            </form>
+
+                        </div>
+
+                    </div>
+                }
+
+                <br />
+
+            </div>
+
+            <div class="col-md-2"></div>
+
+        </div>
+
+    </div>
+}
+
+
+@* Afisarea formularului in care se poate adauga un comentariu *@
+
+<div class="container">
+
+    <div class="row">
+
+        <div class="col-md-2"></div>
+
+        <div class="col-md-8">
+
+            <div class="card">
+
+                <form method="post" action="/Products/Show/@Model.Id">
+
+                    <div class="card-body">
+
+                        <input type="hidden" name="ProductId" value="@Model.Id" />
+
+                        <label>Continut comentariu</label>
+                        <br />
+
+                        <textarea class="form-control" name="Text"></textarea>
+
+                        @Html.ValidationMessage("Text", null, new { @class = "text-danger" })
+
+                        <br /><br />
+                        <label>Rating</label>
+                        <br />
+                        <input type="number" class="form-control" name="Stars" min="1" max="5" />
+
+                        @Html.ValidationMessage("Stars", null, new { @class = "text-danger" })
+
+                        @if(ViewBag.EsteUser == true)
+                        {
+                        <button class="btn" type="submit">Adauga comentariul</button>
+                        }
+                        else
+                        {
+                            <a class="btn" href="/Identity/Account/Register">Adauga comentariul</a>
+                        }
+
+                        
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-2"></div>
+
+    </div>
+
+</div>

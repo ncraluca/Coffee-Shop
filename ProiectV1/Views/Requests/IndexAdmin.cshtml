@@ -1,0 +1,110 @@
+﻿@*Pagina pe care o vede administratorul cand vrea sa vizualizeze toate cererile pe care le-a primit*@
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<br />
+
+<h2 class="text-center">Afisare cereri</h2>
+
+<br />
+
+@if (ViewBag.Message != null)
+{
+    <div class="@ViewBag.Alert p-3 rounded-3 text-center mb-5">@ViewBag.Message</div>
+}
+<br />
+
+<br />
+
+
+@foreach (ProiectV1.Models.Request request in ViewBag.Requests)
+{
+    if (request.Status == "Pending")
+    {
+        <div class="card">
+            <div class="card-body">
+
+
+                <h3 class="card-title alert-success py-3 px-3 rounded-2">@request.Title</h3>
+
+
+
+                <div class="d-flex justify-content-between flex-row mt-5">
+
+                    <div><i class="bi bi-globe"></i> @request.Category.CategoryName</div>
+
+
+                    <span class="alert-success">
+                        <div>@request.Date</div>
+                        <div><i class="bi bi-person"></i> @request.User.UserName </div>
+                    </span>
+
+                </div>
+                <div class="d-flex justify-content-between flex-row mt-5">
+
+                    <div class="d-flex justify-content-between flex-row mt-5">
+                        <div>
+                            <form asp-action="Approve" method="post">
+                                <input type="hidden" name="id" value="@request.Id" />
+                                <button type="submit" class="btn btn-success">Acceptare cerere</button>
+                            </form>
+                        </div>
+
+                        <div>
+                            <a class="btn btn-success" href="/Requests/ShowAdmin/@request.Id">Afisare cerere</a>
+                        </div>
+                   
+                        <div>
+                            <form asp-action="Reject" method="post">
+                                <input type="hidden" name="id" value="@request.Id" />
+                                <button type="submit" class="btn btn-danger">Refuzare cerere</button>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+
+
+            </div>
+        </div>
+        <br />
+    }
+}
+
+<br />
+<br />
+
+@* Afisarea paginata a cererilor *@
+<div>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <li class="page-item">
+                <a class="page-link"
+                   href="/Requests/IndexAdmin?page=1" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            @for (int i = 1; i <= ViewBag.lastPage; i++)
+            {
+                <li class="page-item">
+                    <a class="page-link"
+                       href="/Requests/IndexAdmin?page=@i">@(i)</a>
+                </li>
+            }
+            <li class="page-item">
+                <a class="page-link"
+                   href="/Requests/IndexAdmin?page=@(ViewBag.lastPage)" aria-
+                   label="Next">
+
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+<br />
+<br />
+
